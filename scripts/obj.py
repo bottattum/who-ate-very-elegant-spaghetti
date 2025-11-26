@@ -9,9 +9,8 @@ class object:
         self.image = image
         self.direction = {"right":False, "left":False, "up":False, "down":False}
         self.speed = speed
-        self.type = objType
+        self.objType = objType
         game.objects.append(self)
-
     def move(self):
         if self.direction["right"] == True:
             self.position[0] += self.speed * self.game.dt
@@ -27,8 +26,24 @@ class object:
         self.rect = pygame.Rect(self.position[0],self.position[1],\
         self.image.get_width(),self.image.get_height())
         pygame.draw.rect(self.game.screen,"red",self.rect,2)
-        if self.type == "enemy":
+        
+        
+        if self.objType == "enemy":
+            #eat
             if self.rect.colliderect(self.game.plr):
+                #add points
                 self.game.points += 1
-                print(self.game.points)
+                #remove spaghetto
                 self.game.objects.remove(self)
+                #subtract spaghetti
+                self.game.spgCount -= 1
+
+
+        #lose
+            if self.rect.colliderect(self.game.lose):
+                #reset points
+                self.game.points = 0
+                self.game.lost = True
+
+
+
