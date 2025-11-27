@@ -42,7 +42,7 @@ class object:
         #lose
             if self.rect.colliderect(self.game.lose):
                 #reset points
-                self.game.points = 0
+                #self.game.points = 0
                 self.game.lost = True
 
 

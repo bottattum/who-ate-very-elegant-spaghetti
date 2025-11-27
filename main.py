@@ -3,6 +3,7 @@ import math
 import random
 import time
 from scripts.obj import object
+from scripts.txt import textImage
 
 class game:
     points = 0
@@ -13,6 +14,9 @@ class game:
 
     #object list
     objects = []
+
+    #text image list
+    textImgs = []
 
     running = True
     fps = 60
@@ -33,8 +37,8 @@ class game:
     def run(self):
         #convert alpha is essential, without it, the game lags, HARD
         self.plr = object(self,[400,400],pygame.image.load("assets/guy.png").convert_alpha(),65,"plr")
-        
-        
+        self.text = textImage(self,"Arial",200,"white",[400,100])
+            
 
 
         def restart():
@@ -103,6 +107,11 @@ class game:
                 if self.lost == False:
                     obj.move()
                     obj.collide()
+
+            #for every text image in the text img list do:
+            for txt in self.textImgs:
+                txt.draw(str(self.points))
+
 
 
             pygame.display.update()
