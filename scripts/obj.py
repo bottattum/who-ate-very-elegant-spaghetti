@@ -1,4 +1,5 @@
 import pygame
+import time
 
 class object:
     
@@ -14,8 +15,20 @@ class object:
     def move(self):
         if self.direction["right"] == True:
             self.position[0] += self.speed * self.game.dt
+            if self.game.dash == True and self.game.points >= 5:
+                self.position[0] += 150
+                self.game.dash = False
+                self.game.points -= 5
+
+
         if self.direction["left"] == True:
             self.position[0] -= self.speed * self.game.dt
+            if self.game.dash == True and self.game.points >= 5:
+                self.position[0] -= 150
+                self.game.dash = False
+                self.game.points -= 5
+
+                
         if self.direction["down"] == True:
             self.position[1] += self.speed * self.game.dt
         if self.direction["up"] == True:
@@ -40,10 +53,11 @@ class object:
 
 
         #lose
-            if self.rect.colliderect(self.game.lose):
-                #reset points
-                #self.game.points = 0
+            if self.rect.colliderect(self.game.loseDown):
                 self.game.lost = True
-
+        if self.objType == "plr":
+            if self.rect.colliderect(self.game.loseRight) or\
+                self.rect.colliderect(self.game.loseLeft):
+                self.game.lost = True
 
 
