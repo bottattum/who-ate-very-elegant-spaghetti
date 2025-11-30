@@ -1,9 +1,9 @@
 import pygame
 import time
 
-class object:
+class object():
     
-    position = ()
+    # position = ()
     def __init__(self,game,position,image,speed,objType):
         self.game = game
         self.position = position
@@ -46,11 +46,11 @@ class object:
             if self.rect.colliderect(self.game.plr):
                 #add points
                 self.game.points += 1
-                #remove spaghetto
-                self.game.objects.remove(self)
+                self.game.addedPoints = True
                 #subtract spaghetti
                 self.game.spgCount -= 1
-
+                #remove spaghetto
+                self.game.objects.remove(self)
 
         #lose
             if self.rect.colliderect(self.game.loseDown):

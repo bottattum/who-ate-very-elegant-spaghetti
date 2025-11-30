@@ -13,10 +13,6 @@ class game:
 
     #object list
     objects = []
-
-    #text image list
-    textImgs = []
-
     running = True
     fps = 60
     clock = pygame.time.Clock()
@@ -29,6 +25,9 @@ class game:
     timePassedEvent = pygame.event.custom_type()
     timeTimer = pygame.time.set_timer(timePassedEvent,1000)    
     timePassed = 0
+    highscore = 0
+    addedPoints = False
+
 
 
 
@@ -36,17 +35,18 @@ class game:
     def run(self):
         #convert alpha is essential, without it, the game lags, HARD
         self.plr = object(self,[400,400],pygame.image.load("assets/guy.png").convert_alpha(),65,"plr")
-        self.pointsText = textImage(self,"Arial",200,"white",[400,100])
-        self.timeText = textImage(self,"Arial",100,"white",[400,700])
+
+        self.pointsText = textImage(self,str(self.points),200,"white",[400,100])
+        self.timeText = textImage(self,str(self.timePassed)+"sec",100,"white",[400,700])
+        self.highscoreText = textImage(self,str(self.highscore)+"sec",75,"grey",[600,700])
 
         self.dash = False
-        
 
 
         def restart():
-            #while there are spaghetti, delete spaghetti
-            # pygame.time.get_ticks(0)
             #reset time
+            if self.timePassed > self.highscore:
+                self.highscore = self.timePassed
             self.timePassed = 0
             self.plr.position[0] = 400
             self.points = 0
@@ -68,6 +68,7 @@ class game:
 
 
         while self.running:
+            # print(self.fps)
             #restart
             if self.lost == True:
                 restart()
@@ -83,8 +84,10 @@ class game:
 
 
                 if event.type == game.timePassedEvent:
+                    self.timeText = textImage(self,str(self.timePassed)+"sec",100,"white",[400,700])
                     self.timePassed += 1
-                    
+                     
+
 
                 #plr movement, very clean :D
                 if event.type == pygame.KEYDOWN:
@@ -117,15 +120,21 @@ class game:
             #for every object in the object list do:
             for obj in self.objects:
                 obj.draw()
-
                 if self.lost == False:
                     obj.move()
                     obj.collide()
 
-            #for every text image in the text img list do:
-            for txt in self.textImgs:
-                self.pointsText.draw(str(self.points))
-                self.timeText.draw(str(self.timePassed)+"sec")
+            #points drawing
+            if self.addedPoints == True:
+                self.pointsText = textImage(self,str(self.points),200,"white",[400,100])
+                self.addedPoints = False
+
+            #text drawing
+            self.pointsText.draw()
+            self.timeText.draw()
+            self.highscoreText.draw()
+
+
 
 
             pygame.display.update()

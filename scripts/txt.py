@@ -2,27 +2,17 @@ import pygame
 
 
 class textImage():
-    def __init__(self,game,font,size,color,position):
+    def __init__(self,game,text,size,color,position):
         self.game = game
-        self.font = font
+        self.text = text
         self.size = size
         self.color = color
         self.position = position
-        self.game.textImgs.append(self)
+        self.font = pygame.font.SysFont(None,self.size)
+        self.render = self.font.render(self.text,False,self.color).convert_alpha()
 
+    def draw(self):
+        self.game.screen.blit(self.render,[self.position[0]\
+        -self.render.get_width()/2,self.position[1]-self.render.get_height()/2])
 
-
-
-    def draw(self,text):
-        self.text = text
-        self.typeface = pygame.font.FontType(\
-        "assets/My first font.otf",self.size)
-        self.image = self.typeface.render(self.text, True, self.color)
-        #blit the image at center of the image
-        self.game.screen.blit(self.image,[self.position[0]\
-        -self.image.get_width()/2,self.position[1]-self.image.get_height()/2])
         
-
-
-
- #[self.image.get_width(),self.image.get_height()]
